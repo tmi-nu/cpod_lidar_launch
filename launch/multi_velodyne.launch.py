@@ -39,10 +39,10 @@ def generate_launch_description():
     with open(convert_params_file_front, 'r') as f:
         convert_params_front = yaml.safe_load(f)['velodyne_convert_node']['ros__parameters']
     convert_params_front['calibration'] = os.path.join(convert_share_dir, 'params', 'VLP16db.yaml')
-    velodyne_convert_node_1 = Node(
+    front_velodyne_convert_node = Node(
         package="velodyne_pointcloud",
         executable="velodyne_convert_node",
-        name="velodyne_convert_node_front",
+        name="front_velodyne_convert_node",
         parameters=[convert_params_front],
         remappings=[
             ("velodyne_packets", "front_velodyne_packets"),
