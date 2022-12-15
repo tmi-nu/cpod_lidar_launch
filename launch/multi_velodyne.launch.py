@@ -57,7 +57,7 @@ def generate_launch_description():
         executable="static_transform_publisher",
         name="static_front",
         output="screen",
-        arguments=["0.345","0", "0", "0", "0","1","0","base_link","front"],
+        arguments=["0.345","0", "0", "0", "0","1","0","lidar","front"],
     )
 
 
@@ -102,7 +102,7 @@ def generate_launch_description():
         executable="static_transform_publisher",
         name="static_back",
         output="screen",
-        arguments=["-0.345","0.3", "0", "0", "0","0","1","base_link","back"],
+        arguments=["-0.345","0.3", "0", "0", "0","0","1","lidar","back"],
     )
     ld.add_action(front_velodyne_driver_node)
     ld.add_action(front_velodyne_convert_node)
