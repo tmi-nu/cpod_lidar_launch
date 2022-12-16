@@ -18,18 +18,16 @@ def generate_launch_description():
     # Front Velodyne
     driver_params_file_front = os.path.join(cpod_lidar_launch_dir, 'config', 'front-lidar-params.yaml')
 
+    
+    with open(driver_params_file_front, 'r') as f:
+        driver_params_front = yaml.safe_load(f)['velodyne_driver_node']['ros__parameters']
 
     ## Velodyne Driver 
     front_velodyne_driver_node = Node(
         package="velodyne_driver",
         executable="velodyne_driver_node",
         name="front_velodyne_driver_node",
-       parameters=[{
-           "device_ip": "192.168.0.201",
-           "port": 2368,
-           "frame_id": "front",
-           }],
-        # parameters=[driver_params_file_front],
+        parameters=[driver_params_front],
         remappings=[
             ("velodyne_packets", "front_velodyne_packets")
         ]
@@ -65,18 +63,15 @@ def generate_launch_description():
     # Back Velodyne
     driver_params_file_back = os.path.join(cpod_lidar_launch_dir, 'config', 'back-lidar-params.yaml')
 
+    with open(driver_params_file_back, 'r') as f:
+        driver_params_back = yaml.safe_load(f)['velodyne_driver_node']['ros__parameters']
 
     ## Velodyne driver
     back_velodyne_driver_node = Node(
         package="velodyne_driver",
         executable="velodyne_driver_node",
         name="back_velodyne_driver_node",
-         parameters=[{
-             "device_ip": "192.168.0.202",
-             "port": 2369,
-             "frame_id": "back",
-             }],
-        # parameters=[driver_params_file_back],
+        parameters=[driver_params_back],
         remappings=[
             ("velodyne_packets", "back_velodyne_packets")
         ]
