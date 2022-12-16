@@ -49,6 +49,29 @@ def generate_launch_description():
         ]
     )
 
+    ## Transform Node
+    transform_params_file_front = os.path.join(cpod_lidar_launch_dir, 'config', 'front-lidar-velodyne_transform_node-params.yaml')
+    with open(transform_params_file_front, 'r') as f:
+        transform_params_front= yaml.safe_load(f)['velodyne_transform_node']['ros__parameters']
+    transform_params_front['calibration'] = os.path.join(convert_share_dir, 'params', 'VLP16db.yaml')
+    front_velodyne_transform_node = Node(package='velodyne_pointcloud',
+                                                      executable='velodyne_transform_node',
+                                                      name='front_velodyne_transform_node',
+                                                      output='both',
+                                                      parameters=[transform_params_front],
+                                                      remappings=[
+                                                          ("velodyne_packets", "front_velodyne_packets"),
+                                                          ("velodyne_points", "front_velodyne_points")
+                                                      ])
+
+    static_front_velodyne = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="static_front_velodyne",
+        output="screen",
+        arguments=["0","0", "0", "0", "0","0","0","front","velodyne"],
+    )
+
 
     ## publish tf for front velodyne
     static_front = Node(
@@ -75,6 +98,7 @@ def generate_launch_description():
         remappings=[
             ("velodyne_packets", "back_velodyne_packets")
         ]
+    
     )
 
     ## Converter Node
@@ -93,6 +117,29 @@ def generate_launch_description():
         ]
     )
 
+    ## Transform Node
+    transform_params_file_back = os.path.join(cpod_lidar_launch_dir, 'config', 'back-lidar-velodyne_transform_node-params.yaml')
+    with open(transform_params_file_back, 'r') as f:
+        transform_params_back = yaml.safe_load(f)['velodyne_transform_node']['ros__parameters']
+    transform_params_back['calibration'] = os.path.join(convert_share_dir, 'params', 'VLP16db.yaml')
+    back_velodyne_transform_node = Node(package='velodyne_pointcloud',
+                                                      executable='velodyne_transform_node',
+                                                      name='back_velodyne_transform_node',
+                                                      output='both',
+                                                      parameters=[transform_params_back],
+                                                      remappings=[
+                                                          ("velodyne_packets", "back_velodyne_packets"),
+                                                          ("velodyne_points", "back_velodyne_points")
+                                                      ])
+    static_back_velodyne = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="static_back_velodyne",
+        output="screen",
+        arguments=["0","0", "0", "0", "0","0","0","back","velodyne"],
+    )
+
+
     ## publish tf for back velodyne
     static_back = Node(
         package="tf2_ros",
@@ -101,10 +148,13 @@ def generate_launch_description():
         output="screen",
         arguments=["-0.345","0.3", "0", "0", "0","0","1","lidar","back"],
     )
+
     ld.add_action(front_velodyne_driver_node)
     ld.add_action(front_velodyne_convert_node)
     ld.add_action(back_velodyne_driver_node)
     ld.add_action(back_velodyne_convert_node)
-    ld.add_action(static_front)
-    ld.add_action(static_back)
+    ld.add_action(static_front_velodyne)
+    ld.add_action(static_back_velodyne)
+    # ld.add_action(static_back)
+    # ld.add_action(static_back)
     return ld
