@@ -78,7 +78,7 @@ def generate_launch_description():
              }],
         # parameters=[driver_params_file_back],
         remappings=[
-            ("velodyne_packets", "velodyne_packets_2")
+            ("velodyne_packets", "back_velodyne_packets")
         ]
     )
 
