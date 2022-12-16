@@ -2,8 +2,8 @@ velodyne_convert_node:
     ros__parameters:
         calibration: VLP16db.yaml
         model: VLP16
-        target_frame: front
-        fixed_frame: front
+        target_frame: front_lidar
+        fixed_frame: front_lidar
         min_range: 0.9
         max_range: 130.0
         view_direction: 0.0
