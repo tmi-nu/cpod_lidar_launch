@@ -24,11 +24,12 @@ def generate_launch_description():
         package="velodyne_driver",
         executable="velodyne_driver_node",
         name="front_velodyne_driver_node",
-       #  parameters=[{
-       #      "device_ip": "192.168.0.201",
-       #      "port": 2368,
-       #      }],
-        parameters=[driver_params_file_front],
+       parameters=[{
+           "device_ip": "192.168.0.201",
+           "port": 2368,
+           "frame_id": "front",
+           }],
+        # parameters=[driver_params_file_front],
         remappings=[
             ("velodyne_packets", "front_velodyne_packets")
         ]
@@ -70,11 +71,12 @@ def generate_launch_description():
         package="velodyne_driver",
         executable="velodyne_driver_node",
         name="back_velodyne_driver_node",
-       #  parameters=[{
-       #      "device_ip": "192.168.0.202",
-       #      "port": 2369,
-       #      }],
-        parameters=[driver_params_file_back],
+         parameters=[{
+             "device_ip": "192.168.0.202",
+             "port": 2369,
+             "frame_id": "back",
+             }],
+        # parameters=[driver_params_file_back],
         remappings=[
             ("velodyne_packets", "velodyne_packets_2")
         ]
